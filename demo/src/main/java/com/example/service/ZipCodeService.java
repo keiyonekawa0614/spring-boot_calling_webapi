@@ -14,32 +14,28 @@ import com.example.dto.ZipCodeDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
-public class DemoService {
+public class ZipCodeService {
 	
 	RestTemplate restTemplate = new RestTemplate();
 	
 	/** 郵便番号検索API */
 	private static final String URL = "http://zipcloud.ibsnet.co.jp/api/search?zipcode=";
 	
-	public void service(String zipcode) {
+	public ZipCodeDto service(String zipcode) {
 
 		ResponseEntity<String> responseEntity = 
-				restTemplate.postForEntity(URL + zipcode, new HashMap<>(), String.class);
+				restTemplate.postForEntity(URL + zipcode, null, String.class);
 		
 		ObjectMapper mapper = new ObjectMapper();
-		
+		ZipCodeDto zipCodeDto = new ZipCodeDto();
 		try {
-			ZipCodeDto zipCodeDto = mapper.readValue(responseEntity.getBody(), ZipCodeDto.class);
-			for (ZipCodeDataDto zcp : zipCodeDto.getResults()) {
-				System.out.println("json取得 :" + zcp.getAddress1());
-				System.out.println("json取得 :" + zcp.getAddress2());
-				System.out.println("json取得 :" + zcp.getAddress3());
-				
-			}
+			zipCodeDto = mapper.readValue(responseEntity.getBody(), ZipCodeDto.class);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
+		return zipCodeDto;
 	}
+	
 
 }
