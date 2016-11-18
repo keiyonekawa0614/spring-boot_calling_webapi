@@ -1,0 +1,38 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html>
+<head>
+<meta charset="UTF-8"></meta>
+<title>Insert title here</title>
+</head>
+<body>
+ <form method="POST" action="/contact/end">
+  <table class="sample-table">
+   <tr>
+    <th>お名前</th>
+    <td><input type="text" name="名前" size="30"></input></td>
+   </tr>
+   <tr>
+    <th>メールアドレス</th>
+    <td><input type="text" name="Email" size="40"></input></td>
+   </tr>
+   <tr>
+    <th>性別</th>
+    <td><span><input type="radio" name="性別" value="男性">男性</input></span> <span><input type="radio" name="性別" value="女性">女性</input></span></td>
+   </tr>
+   <tr>
+    <th>趣味</th>
+    <td><span><input type="checkbox" name="趣味" value="読書">読書</input></span> <span><input type="checkbox" name="趣味" value="映画鑑賞">映画鑑賞</input></span> <span><input type="checkbox" name="趣味"
+      value="旅行">旅行</input></span></td>
+   </tr>
+   <tr>
+    <th>内容</th>
+    <td><textarea rows="10" cols="50" name="内容"></textarea></td>
+   </tr>
+  </table>
+  <div id="mainform-submit">
+   <input type="submit" name="送信ボタン" value="送信"></input>
+  </div>
+ </form>
+
+</body>
+</html>

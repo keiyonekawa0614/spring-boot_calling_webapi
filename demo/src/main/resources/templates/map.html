@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>map表示画面</title>
+<link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.0/material.amber-pink.min.css"></link>
+<script src="https://storage.googleapis.com/code.getmdl.io/1.0.0/material.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"></link>
+ <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0px; padding: 0px }
+      #map { height: 50% }
+    </style>
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBuF7sKBPtJawa0sNDuil2ysI8vN5eXjnc"
+	type="text/javascript" charset="UTF-8"></script>
+
+<script type="text/javascript" th:inline="javascript">
+	   var map;
+	   var mk;//現在置いているマーカー
+    var mk_array = [];//マーカー消去用の配列
+	   /* 初期化 */
+	   function init() {
+	    // map初期作成 東京駅の緯度経度を設定
+	    latlng = new google.maps.LatLng(35.681298, 139.766247);
+        document.getElementById("show_lat").value = 35.681298;
+        document.getElementById("show_lng").value = 139.766247;
+		       // Mapを作成
+		        map = new google.maps.Map(document.getElementById("map"),{
+			        zoom : 16,
+			        mapTypeId : google.maps.MapTypeId.ROADMAP, //通常の地図
+			        center : latlng                            //地図の場所
+		      });
+		      //addListener関数:マップ(map)がクリック(click)されると、setMarker関数が呼び出される
+		      google.maps.event.addListener(map, 'click', setMarker);
+     }
+    
+    /* 現在地を取得し、マーカーを作成する */
+    function getMylocate() {
+    	if (!navigator.geolocation) {
+		    alert('Geolocation APIに対応していません');
+		     return false;
+		   }
+    	// 現在地の取得
+		   navigator.geolocation.getCurrentPosition(function(position) {
+	    // 緯度経度の取得
+	    latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        document.getElementById("show_lat").value = position.coords.latitude;
+        document.getElementById("show_lng").value = position.coords.longitude;
+		    // Mapを作成
+		     map = new google.maps.Map(document.getElementById("map"),{
+			       zoom : 16,
+			       mapTypeId : google.maps.MapTypeId.ROADMAP, //通常の地図
+			       center : latlng                            //地図の場所
+		      });
+		      // Markerを作成
+		      marker = new google.maps.Marker({
+			      position: latlng,
+	        map: map
+		      });
+		       marker.setMap(map);
+	        mk_array.push(marker);
+			       // マーカーの吹き出しを作成
+	         var contentString = '現在地';
+	         var infowindow = new google.maps.InfoWindow({
+	            content: contentString   //吹き出し内コメント
+	        }); 
+	      	  // マウスをかざしたときに情報ウィンドウを表示
+	         google.maps.event.addListener(marker, 'mouseover', function() {
+	            infowindow.open(map,marker);
+	        }); 
+	         // マウスを取り除いたときに情報ウィンドウをクローズ
+	         google.maps.event.addListener(marker, 'mouseout', function() {
+	           infowindow.close(map,marker);
+	       }); 
+	         //addListener関数:マップ(map)がクリック(click)されると、setMarker関数が呼び出される
+		        google.maps.event.addListener(map, 'click', setMarker);
+       }, function() {
+			        alert('位置情報取得に失敗しました');
+		    });	
+     }
+    
+	
+	   /*クリックした位置にマーカーを設置*/
+    function setMarker(event){
+    //event.latLng.lat()がクリックしたときの経度,event.latLng.lng()が緯度を表す
+    //    alert("経度:"+event.latLng.lat()+"\n緯度:"+event.latLng.lng());
+    var latlng = new google.maps.LatLng(event.latLng.lat(),event.latLng.lng());
+    //マーカーを設置し、各種オプションを入力していく
+    mk = new google.maps.Marker({
+      map:map,
+      position: latlng,
+    });
+    mk.setMap(map);
+    mk_array.push(mk);
+    // クリックした緯度経度を表示
+    document.getElementById("show_lat").value = event.latLng.lat();
+    document.getElementById("show_lng").value = event.latLng.lng();
+
+    }
+	   
+    /* 設置したマーカーを全て削除する */
+    function clearOverlays() {
+      mk_array.forEach(function(mk, idx){mk.setMap(null);});
+    }  
+    
+    /* 地名・住所から緯度・経度を取得する */
+    function codeAddress() {
+    	var address = document.getElementById("address").value;
+    	 // google.maps.Geocoder()コンストラクタのインスタンスを生成
+    	  var geocoder = new google.maps.Geocoder();
+    	// geocoder.geocode()メソッドを実行 
+    	  geocoder.geocode( { 'address': address}, function(results, status) {
+    		// ジオコーディングが成功した場合
+    		    if (status == google.maps.GeocoderStatus.OK) {
+
+    		      // google.maps.Map()コンストラクタに定義されているsetCenter()メソッドで
+    		      // 変換した緯度・経度情報を地図の中心に表示
+    		      map.setCenter(results[0].geometry.location);
+
+    		      // 地図上に目印となるマーカーを設定います。
+    		      // google.maps.Marker()コンストラクタにマーカーを設置するMapオブジェクトと
+    		      // 変換した緯度・経度情報を渡してインスタンスを生成
+    		      // →マーカー詳細
+    		      var marker = new google.maps.Marker({
+    		        map: map,
+    		        position: results[0].geometry.location
+    		      });
+    		      marker.setMap(map);
+    		      mk_array.push(marker);
+    		      document.getElementById("show_lat").value = results[0].geometry.location.lat();
+    		      document.getElementById("show_lng").value = results[0].geometry.location.lng();
+
+    		    // ジオコーディングが成功しなかった場合
+    		    } else {
+    		      console.log('Geocode was not successful for the following reason: ' + status);
+    		    }
+    	  });
+    }
+</script>
+</head>
+
+<body onload="init()">
+      <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">  
+        <header class="mdl-layout__header">  
+            <div class="mdl-layout__header-row">  
+                <!-- Title -->  
+                <span class="mdl-layout-title">google maps sample</span>  
+                <div class="mdl-layout-spacer"></div>  
+            </div> 
+            </header>
+                 <div class="mdl-layout__drawer">  
+            <span class="mdl-layout-title">メニュー</span>  
+            <nav class="mdl-navigation">  
+                <a class="mdl-navigation__link" href="">住所検索</a>  
+                <a class="mdl-navigation__link" href="/contact">お問い合わせ</a>  
+                <a class="mdl-navigation__link" href="http://www.yahoo.co.jp">Yahoo! Japan</a>  
+                <a class="mdl-navigation__link" href="">ホテル検索</a>  
+            </nav>  
+        </div> 
+        <main class="mdl-layout__content"> 
+    <div id="map" style="width:100%; height:400px"></div>
+    <form>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+        緯度<input class="mdl-textfield__input" id="show_lat" type="text"></input>
+        <label class="mdl-textfield__label" for="show_lat"></label>
+         </div>
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">   
+        経度<input class="mdl-textfield__input" id="show_lng" type="text"></input>
+        <label class="mdl-textfield__label" for="show_lng"></label>
+       </div>
+       <input class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+              type="button" value="送信" onclick="codeAddress()"></input>
+       </form>
+    <form>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+      <input class="mdl-textfield__input" type="text" value="" id="address"></input>
+      <label class="mdl-textfield__label" for="show_lat"  >地名・住所</label>
+      </div>
+      <input class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+             type="button" value="地図検索" onclick="codeAddress()"></input>
+   </form>
+   <div class="mdl-card__actions"> 
+    <input class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+           type="button" value="マーカーを削除する" onclick="clearOverlays()"></input>
+   </div>
+   <div class="mdl-card__actions"> 
+   <input class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+           type="submit" value="現在地を取得する" onclick="getMylocate()"></input>
+   </div>
+   </main> 
+    </div> 
+</body>
+
+</html>
