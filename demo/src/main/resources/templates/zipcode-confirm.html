@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html>
 <head>
 <meta charset="UTF-8"></meta>
@@ -6,13 +6,42 @@
 </head>
 <body>
 	<form method="POST" action="/zipcode">
-		<table class="sample-table">
+		<table class="sample-table" th:each="item : ${zipcodeList}" th:object="${item}">
 			<tr>
-				<th>住所</th>
-				<td><span th:text="${address1} + ${address2} + ${address3}"></span></td>
+				<th>郵便番号</th>
+				<td th:text="*{zipcode}"></td>
+			</tr>
+			<tr>
+				<th>都道府県コード</th>
+				<td th:text="*{prefcode}"></td>
+			</tr>
+			<tr>
+				<th>都道府県名</th>
+				<td th:text="*{address1}"></td>
+			</tr>
+			<tr>
+				<th>市区町村名</th>
+				<td th:text="*{address2}"></td>
+			</tr>
+			<tr>
+				<th>町域名</th>
+				<td th:text="*{address3}"></td>
+			</tr>
+
+			<tr>
+				<th>都道府県名カナ</th>
+				<td th:text="*{kana1}"></td>
+			</tr>
+			<tr>
+				<th>市区町村名カナ</th>
+				<td th:text="*{kana2}"></td>
+			</tr>
+			<tr>
+				<th>町域名カナ</th>
+				<td th:text="*{kana3}"></td>
 			</tr>
 		</table>
-			<input type="submit" value="戻る" size="30"></input>
+		<input type="submit" value="戻る" size="30"></input>
 	</form>
 </body>
 </html>

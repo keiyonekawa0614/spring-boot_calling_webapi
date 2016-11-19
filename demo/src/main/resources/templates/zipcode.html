@@ -5,14 +5,15 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<form method="get" action="/zipcode/confirm">
+	<form method="POST" action="/zipcode/confirm">
 		<table class="sample-table">
 			<tr>
 				<th>郵便番号</th>
 				<td><input type="text" name="zipcode" value="" size="30"></input></td>
 			</tr>
 		</table>
-			<input type="submit" value="進む" size="30"></input>
+			<input type="submit" value="送信" size="30"></input>
+			<font color="#ff0000"><p th:text="${errorMessage}"></p></font>
 	</form>
 
 </body>
