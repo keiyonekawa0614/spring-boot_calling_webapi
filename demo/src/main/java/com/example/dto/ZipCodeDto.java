@@ -6,10 +6,10 @@ import java.util.List;
 public class ZipCodeDto {
 	
 	/** ステータス */
-	int status = 0;
+	int status;
 	
 	/** メッセージ */
-	String message = null;
+	String message;
 	
 	/** 郵便番号情報リスト */
 	List<ZipCodeDataDto> results = new ArrayList<>();

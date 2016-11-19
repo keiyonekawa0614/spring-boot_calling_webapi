@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.dto.ZipCodeDataDto;
 import com.example.dto.ZipCodeDto;
 import com.example.service.ZipCodeService;
 
@@ -23,24 +23,29 @@ public class ZipCodeController {
 	 * @return "zipcode"
 	 */
 	@RequestMapping("/zipcode")
-	public String contact(HttpSession session) {
-		
+	public String zipcodeForm(HttpSession session, Model model) {
 		return "zipcode";
 	}
 	
 	/**
-	 * 郵便番号情報表示画面	
+	 * 郵便番号情報表示	
 	 * @return "zipcode-confirm"
 	 */
-	@RequestMapping("/zipcode/confirm")
-	public String contactend(HttpSession session, Model model, 
-			                 @RequestParam String zipcode){
-		ZipCodeDto zipCodeDto = zpcService.service(zipcode);
-		for (ZipCodeDataDto zip : zipCodeDto.getResults()) {
-			model.addAttribute("address1", zip.getAddress1());
-			model.addAttribute("address2", zip.getAddress2());
-			model.addAttribute("address3", zip.getAddress3());
+	@RequestMapping(value="/zipcode/confirm", method=RequestMethod.POST)
+	public String zipcodeConfirm(HttpSession session, Model model, 
+			                     @RequestParam("zipcode") String zipcode){
+		
+		// 一応必須チェックのみ 数字・桁数チェックは省略
+		// nullまたは空文字の場合、入力フォームにエラーメッセージを表示
+		if (zipcode == null || zipcode.equals("")) {
+			model.addAttribute("errorMessage", "郵便番号を入力してください。");
+			return zipcodeForm(session, model);
 		}
+		
+		// 郵便番号検索APIサービス呼び出し
+		ZipCodeDto zipCodeDto = zpcService.service(zipcode);
+		// thymeleafでリストを展開して表示する
+        model.addAttribute("zipcodeList", zipCodeDto.getResults());
 		return "zipcode-confirm";	
 	}
 }
