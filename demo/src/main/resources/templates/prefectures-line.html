@@ -1,0 +1,22 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<title>Insert title here</title>
+</head>
+<body>
+	<form method="POST" th:action="@{/prefectures/line/station}">
+		<table class="sample-table">
+			<tr>
+				<th>沿線名</th>
+			</tr>
+			<tr th:each="item : ${lineList}" th:object="${item}">
+				<td th:text="*{line_name}"></td>
+				<td><button type="submit" name="linecode" th:value="*{line_cd}"
+						size="30">送信</button></td>
+			</tr>
+		</table>
+	</form>
+
+</body>
+</html>

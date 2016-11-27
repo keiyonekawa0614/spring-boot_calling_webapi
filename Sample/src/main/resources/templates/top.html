@@ -1,0 +1,33 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>都道府県から沿線/駅表示プルダウン表示</title>
+<script
+	src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBuF7sKBPtJawa0sNDuil2ysI8vN5eXjnc"
+	type="text/javascript" charset="UTF-8"></script>
+<script type="text/javascript" th:src="@{/javascript/station.js}"></script>
+<script type="text/javascript" th:src="@{/javascript/googlemap.js}"
+	th:inline="javascript"></script>
+</head>
+<body onload="init()">
+	都道府県から沿線/駅表示プルダウン表示
+	<br />
+	<form name="form" method="POST" th:action="@{/sample}">
+		<select name="pref"
+			onChange="setMenuItem(0,this[this.selectedIndex].value)">
+			<option value="0" selected="selected">-----</option>
+			<th:block th:each="item : ${prefList}" th:object="${item}">
+				<option th:value="*{prefCode}" th:text="*{prefName}">サンプル1</option>
+			</th:block>
+		</select> <select name="s0"
+			onChange="setMenuItem(1,this[this.selectedIndex].value)">
+			<option selected="selected">----</option>
+		</select> 
+		<select name="s1" onChange="setMenuItem(2,this[this.selectedIndex].value)">
+			<option selected="selected">----</option>
+		</select>
+	</form>
+	<div id="map" style="width: 80%; height: 400px"></div>
+</body>
+</html>

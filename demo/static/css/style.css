@@ -1,0 +1,8 @@
+ul.station li {
+	display: block;
+	float: left;
+	height: 30px;
+	list-style-type: none;
+	text-align: left;
+	width: 8%;
+}
