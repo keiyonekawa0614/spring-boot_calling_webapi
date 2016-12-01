@@ -35,9 +35,7 @@ function setMenuItem(type, code) {
 		}
 	} else {
 		var aa = document.form.s1.value;
-		console.log("確認：" + aa);
 		var data = aa.split(",");
-		console.log("lat：" + data[0] + ",lon" + data[1]);
 		latlng = new google.maps.LatLng(data[0], data[1]);
 		// Mapを作成
 		map = new google.maps.Map(document.getElementById("map"), {

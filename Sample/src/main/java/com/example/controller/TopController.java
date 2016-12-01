@@ -28,7 +28,7 @@ public class TopController {
 			prefList.add(dto);
 		}
 		model.addAttribute("prefList", prefList);
-
+		
 		return "top";
 	}
 }

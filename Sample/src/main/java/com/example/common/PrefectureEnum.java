@@ -97,18 +97,5 @@ public enum PrefectureEnum {
                return getName() + "県";
        }
    }
-   
-   /**
-    * 指定された都道府県名（"都"、"府"、"県"は含む）のPrefectureオブジェクトを取得します。
-    * 存在しない場合はnullを返します。
-    * 
-    * @param fullName    都道府県名
-    * @return Prefectureオブジェクト
-    */
-   public static PrefectureEnum getByFullName(String fullName) {
-       for (PrefectureEnum p : PrefectureEnum.values()) {
-           if (p.getFullName().equals(fullName)) return p;
-       }
-       return null;
-   }
+ 
 }
