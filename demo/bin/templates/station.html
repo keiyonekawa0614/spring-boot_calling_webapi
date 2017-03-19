@@ -1,0 +1,35 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"
+	media="all"></link>
+<script
+	src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBuF7sKBPtJawa0sNDuil2ysI8vN5eXjnc"
+	type="text/javascript" charset="UTF-8"></script>
+<script type="text/javascript" th:src="@{/javascript/googlemap.js}"
+	th:inline="javascript"></script>
+</head>
+<body onload="init()">
+
+	<h2>駅名一覧</h2>
+	<div>
+
+		<ul class="station">
+			<th:block th:each="item : ${stationList}" th:object="${item}">
+				<li th:text="*{station_name}"></li>
+				<form name="fm">
+					<li><input type="button" value="送信" onclick="codeAddress()"></input></li>
+					<input th:id="*{lon}" type="hidden" th:value="*{lon}"></input><label th:for="*{lon}"></label> 
+					<input th:id="*{lat}" type="hidden" th:value="*{lat}"></input><label th:for="*{lat}"></label>
+				</form>
+			</th:block>
+		</ul>
+
+	</div>
+
+	<div id="map" style="width: 80%; height: 400px"></div>
+
+</body>
+</html>

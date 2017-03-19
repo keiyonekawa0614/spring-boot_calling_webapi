@@ -1,0 +1,20 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<title>Insert title here</title>
+</head>
+<body>
+	<form method="POST" action="/zipcode/confirm">
+		<table class="sample-table">
+			<tr>
+				<th>郵便番号</th>
+				<td><input type="text" name="zipcode" value="" size="30"></input></td>
+			</tr>
+		</table>
+			<input type="submit" value="送信" size="30"></input>
+			<font color="#ff0000"><th:block th:text="${errorMessage}"></th:block></font>
+	</form>
+
+</body>
+</html>
