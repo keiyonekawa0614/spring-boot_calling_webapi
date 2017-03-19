@@ -17,18 +17,17 @@ public class TopController {
 
 	@RequestMapping("/")
 	public String top(HttpSession session, Model model) {
-		
-		PrefectureEnum[] types = PrefectureEnum.values();
+
 		List<PrefectureDto> prefList = new ArrayList<>();
-		
-		for (PrefectureEnum m : types) {
+
+		for (PrefectureEnum m : PrefectureEnum.values()) {
 			PrefectureDto dto = new PrefectureDto();
 			dto.setPrefCode(m.getCode());
 			dto.setPrefName(m.getFullName());
 			prefList.add(dto);
 		}
 		model.addAttribute("prefList", prefList);
-		
+
 		return "top";
 	}
 }

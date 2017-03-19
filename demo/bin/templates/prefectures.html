@@ -1,0 +1,21 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<title>Insert title here</title>
+</head>
+<body>
+    <H2>都道府県一覧</H2>
+	<form method="POST" th:action="@{/prefectures/line}">
+
+		<select name="prefcode" style="width: 200px; font-size: 100px" >
+			<th:block th:each="item : ${prefList}" th:object="${item}">
+				<option th:value="*{prefCode}" th:text="*{prefName}">サンプル1</option>
+			</th:block>
+		</select>
+		<input type="submit" value="送信" size="30"></input>
+
+	</form>
+
+</body>
+</html>

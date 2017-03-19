@@ -1,0 +1,48 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<title>Insert title here</title>
+</head>
+<body>
+	<form method="POST" action="/prefectures">
+		<table class="sample-table" th:each="item : ${zipcodeList}"
+			th:object="${item}">
+			<tr>
+				<th>郵便番号</th>
+				<td th:text="*{zipcode}"></td>
+			</tr>
+			<tr>
+				<th>都道府県コード</th>
+				<td th:text="*{prefcode}"></td>
+			</tr>
+			<tr>
+				<th>都道府県名</th>
+				<td th:text="*{address1}"></td>
+			</tr>
+			<tr>
+				<th>市区町村名</th>
+				<td th:text="*{address2}"></td>
+			</tr>
+			<tr>
+				<th>町域名</th>
+				<td th:text="*{address3}"></td>
+			</tr>
+
+			<tr>
+				<th>都道府県名カナ</th>
+				<td th:text="*{kana1}"></td>
+			</tr>
+			<tr>
+				<th>市区町村名カナ</th>
+				<td th:text="*{kana2}"></td>
+			</tr>
+			<tr>
+				<th>町域名カナ</th>
+				<td th:text="*{kana3}"></td>
+			</tr>
+		</table>
+		<input type="submit" value="送信" size="30"></input>
+	</form>
+</body>
+</html>
