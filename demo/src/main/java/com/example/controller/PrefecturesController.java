@@ -23,6 +23,7 @@ public class PrefecturesController {
 
 	@Autowired
 	PrefecturesService prefecturesService;
+
 	@Autowired
 	StationService stationService;
 
@@ -31,7 +32,7 @@ public class PrefecturesController {
 
 		PrefectureEnum[] types = PrefectureEnum.values();
 		List<PrefectureDto> prefList = new ArrayList<>();
-		
+
 		for (PrefectureEnum m : types) {
 			PrefectureDto dto = new PrefectureDto();
 			dto.setPrefCode(m.getCode());
@@ -44,7 +45,7 @@ public class PrefecturesController {
 	}
 
 	@RequestMapping("/prefectures/line")
-	public String prefLine(HttpSession session, Model model, 
+	public String prefLine(HttpSession session, Model model,
 			               @RequestParam("prefcode") String prefcode) {
 
 		LineDto dto = prefecturesService.service(prefcode);
@@ -52,16 +53,16 @@ public class PrefecturesController {
 
 		return "prefectures-line";
 	}
-	
+
 	@RequestMapping("/prefectures/line/station")
 	public String prefStation(HttpSession session, Model model,
 			                  @RequestParam("linecode") String linecode){
-		
+
 		System.out.println("パラメータ確認 :" + linecode);
-		
+
 		StationDto dto = stationService.service(linecode);
 		model.addAttribute("stationList", dto.getStation_l());
-		
+
 		return "station";
 
 }
